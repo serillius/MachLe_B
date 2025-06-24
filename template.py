@@ -5,7 +5,7 @@ VISUALIZATION       ============================================================
 """
 # %% ### Plot classes / Data ###
 import seaborn as sns
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 # Histgramm
 plt.figure(figsize=(15,7))
@@ -106,65 +106,63 @@ print(feat_importance)
 """
 LEARNERS            ==========================================================================================
 """
-# %%
-# Linear (Multivariate) Regression
+#%% Linear (Multivariate) Regression
 from sklearn.linear_model import LinearRegression
 model = LinearRegression(normalize=True, fit_intercept=True) # fit_intercept=True -> Include offset in model
 print("params: ", model.coef_)
 print("constant: ", model.intercept_)
 
-# Polynomial Regression
+#%% Polynomial Regression
 from sklearn.preprocessing import PolynomialFeatures
 poly_features = PolynomialFeatures(degree=2)
-x_poly = poly_features.fit_transform(x)
 # --> Now we can apply linear regression to the transformend features
+x_poly = poly_features.fit_transform(x)
 
-# Logistic Regression (Is actually a classifier)
+# %% Logistic Regression (Is actually a classifier)
 from sklearn.linear_model import LogisticRegression
 model = LogisticRegpenalty={'l1', 'l2'}, C=1.0 # C is regularization strength
 
-# Lasso and Ridge Regression
+# %% Lasso and Ridge Regression
 from sklearn.linear_model import Lasso, Ridge
 model = Lasso(alpha=1.0) # alpha is regularization strength
 model = Ridge(alpha=1.0) # alpha is regularization strength
 
-# Decision Tree
+# %% Decision Tree
 from sklearn.tree import DecisionTreeClassifier
 model = DecisionTreeClassifier(criterion={'gini', 'entropy', 'log_loss'}, 
                                max_depth=3, splitter={'best', 'random'}, 
                                random_state=42)
 
-# RandomForest
+# %% RandomForest
 from sklearn.ensemble import RandomForestClassifier
 model = RandomForestClassifier(criterion={'gini', 'entropy', 'log_loss'},
                                n_estimators=100, max_depth=3, 
                                random_state=42)
 
-# Support Vector Machine
+# %% Support Vector Machine
 from sklearn.svm import SVC
 model = SVC(kernel={'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'})
 
-# k-Nearest-Neighbors
+# %% k-Nearest-Neighbors
 from sklearn.neighbors import KNeighborsClassifier
 model = KNeighborsClassifier(n_neighbors=5)
 
-# Naive-Bayes-Classifier
+# %% Naive-Bayes-Classifier
 from sklearn.naive_bayes import GaussianNB
 model = GaussianNB()
 
-# Gaussian Process Regressor
+# %% Gaussian Process Regressor
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.gaussian_process.kernels import RBF
 kernel = 1.0 * RBF(length_scale=1.0)  # Radial Basis Function (RBF) kernel
 gpc = GaussianProcessClassifier(kernel=kernel, random_state=42)
 
-### Model Trainging and Prediction ###
+# %% Model Trainging and Prediction ###
 model.fit(x_train, y_train)
 y_pred = model.predict(x_test) # to get predictions on the whole dataset
 y_proba = model.predict_proba(x_test) # to get the probability for each class
 
-### Metrics ###
-# Classification
+# %% Metrics ###
 from sklearn.metrics import (accuracy_score, 
                              precision_score, 
                              recall_score, 
@@ -172,6 +170,7 @@ from sklearn.metrics import (accuracy_score,
                              roc_auc_score,
                              classification_report)
 
+# Classification
 print("Classification Metrics:")
 print(f"Accuracy: {accuracy_score(y_test, y_pred):.2f}")
 print(f"Precision: {precision_score(y_test, y_pred):.2f}")
@@ -235,7 +234,6 @@ plot_rpc(recall, precision)
 """
 VALIDATION          ==========================================================================================
 """
-
 # %% ### Cross-Validation ###
 from sklearn.model_selection import cross_val_score
 
@@ -267,15 +265,15 @@ score = grid.score(x_test, y_test) # Depends on scoring -> accuracy or f1-score
 print(f'Score: {score:.2f}')
 print(f'Best Paramenters {grid.best_params_}')
 
-
+# %%
 """
 UNSUPERVISED LEARNING  ==========================================================================================
 """
-
 # %% ### Clustering Algorythms
 
-## Hierarchical clustering
+
 from scipy.cluster.hierarchy import linkage
+## Hierarchical clustering
 
 # df = pd.DataFrame
 row_clusters = linkage(df.values, method='complete', metric='euclidean')
@@ -351,9 +349,8 @@ plt.show()
 
 
 # %% Elbow Curve / Silhouette score, BIC
-
-## Elbow Curve (Example with k-Means) / BIC
 distortions = []
+## Elbow Curve (Example with k-Means) / BIC
 ScoreList   = []
 InertiaList = []
 maxNumberOfClusters=15
@@ -416,9 +413,8 @@ plt.show()
 print(silhouette_avg)
 
 # %% Dimensionality Reduction: PCA tSNE
-
-## PCA
 from sklearn.decomposition import PCA
+## PCA
 
 pca = PCA(n_components=100, whiten=True, random_state=0)
 x_pca = pca.fit_transform(x_people)
@@ -450,4 +446,7 @@ plt.scatter(x_reduced[:, 0], x_reduced[:, 1], c=y.astype(int), cmap="jet")
 plt.axis('off')
 plt.colorbar()
 plt.show()
+
+
+
 
